@@ -8,7 +8,8 @@ import java.net.Socket;
 public class Server {
 
     static void connection(int port) {
-
+        String name;
+        String answer;
         ServerSocket serverSocket;
 
         try {
@@ -18,11 +19,33 @@ public class Server {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             System.out.println("New connection accepted");
-
-            final String result = String.format("Hi %s, your port is %d", in.readLine(), clientSocket.getPort());
-
-            out.println(result);
-
+            out.println("Привет, как тебя зовут?");
+            name = in.readLine();
+            out.println("Ты поддерживаешь идею интернациональной революции(Да/Нет)?");
+            answer = in.readLine();
+            while (true) {
+                if (answer.equalsIgnoreCase("Да")) {
+                    out.println("'Пролетарии всех стран, соединяйтесь!', " + name);
+                    out.println(java.util.Optional.empty());
+                    break;
+                } else if (answer.equalsIgnoreCase("Нет")) {
+                    out.println("'За Веру, Царя и Отечество!', " + name);
+                    out.println(java.util.Optional.empty());
+                    break;
+                } else while (clientSocket.isConnected()) {
+                    out.println("Русским по белому спросили 'Да или нет', " + name);
+                    answer = in.readLine();
+                    if (answer.equalsIgnoreCase("Да")) {
+                        out.println("'Пролетарии всех стран, соединяйтесь!', " + name);
+                        out.println(java.util.Optional.empty());
+                        break;
+                    } else if (answer.equalsIgnoreCase("Нет")) {
+                        out.println("'За Веру, Царя и Отечество!', " + name);
+                        out.println(java.util.Optional.empty());
+                        break;
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
